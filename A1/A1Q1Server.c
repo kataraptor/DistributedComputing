@@ -8,6 +8,10 @@
  * 
  * to compile: gcc datagram_server2.c -o dgram_server
  */
+#define BUFFSIZE 256
+#define PORT 3010
+#define DIRECTORYSERVER goose.cs.umanitoba.ca
+
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -65,7 +69,19 @@ int main(int argc, char *argv[]) {
                struct addrinfo *ai_next;
            };
   */
-
+  //TRYING TO TOUCH THE DIRECTORY SERVER
+  //wtf does the port go???
+  struct addrinfo *hostaddr;
+  result = getaddrinfo(DIRECTORYSERVER, PORT, NULL, &hostaddr);
+  if(result != 0){
+    fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
+    exit(EXIT_FAILURE);
+  }
+  
+  
+  
+  
+  //LETTING STUFF TALK TO YOU
   // set up a 'hints' struct to specify what kind of address we want
   bzero((void *)&hints, sizeof(hints));
   hints.ai_family = AF_INET;        // IPV4 address
