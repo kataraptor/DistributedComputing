@@ -30,6 +30,7 @@ typedef struct file_info{
 
 int main(int argc, char *argv[]) {
   int sfd;                                 // socket file descriptor
+  int sfdElectricBoogaloo;                                 // socket file descriptor
   uint result;                             // return result from functions
   struct addrinfo hints;                   // specify criteria for getaddrinfo
   struct sockaddr_in from;                 // received-from socket address
@@ -115,6 +116,13 @@ int main(int argc, char *argv[]) {
   hints.ai_family = AF_INET;        // IPV4 address
   hints.ai_socktype = SOCK_DGRAM;   // datagram socket
   hints.ai_flags = AI_PASSIVE;      // suitable for accepting connections
+  
+  sfdElectricBooglaoo = socket(AF_INET, SOCK_DGRAM, 0); 
+  if (sfdElectricBooglaoo == -1) {
+    perror("Server couldn't open a socket");
+    exit (1);
+  }
+ 
  
   struct addrinfo *hostaddr;  
   result = getaddrinfo(NULL, argv[1], &hints, &hostaddr);
@@ -124,7 +132,7 @@ int main(int argc, char *argv[]) {
   }
   
   // use bind to assign a name to the socket
-  result = bind(sfd, hostaddr->ai_addr, hostaddr->ai_addrlen);
+  result = bind(sfdElectricBoogaloo, hostaddr->ai_addr, hostaddr->ai_addrlen);
   if (result == -1) {
     perror("Couldn't bind to server socket");
     exit (EXIT_FAILURE);
@@ -132,7 +140,7 @@ int main(int argc, char *argv[]) {
   printf("Datagram server starting on port %s.\n", argv[1]);
   
   // wait for a message
-  result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  result = recvfrom(sfdElectricBooglaoo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
   if (result == -1) {
     perror("Server recvfrom failed");
     exit (EXIT_FAILURE);
@@ -143,7 +151,7 @@ int main(int argc, char *argv[]) {
   printf("%s.\n", buffer);
   
   //got your shit, also here's the line you asked for. 
-  result = sendto(sfd, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
+  result = sendto(sfdElectricBooglaoo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
   if (result == -1) {
     perror("Server sendto failed");
     exit (EXIT_FAILURE);
@@ -151,5 +159,6 @@ int main(int argc, char *argv[]) {
 
   // close the socket and exit
   close(sfd);
+  close(sfdElectricBooglaoo);
   exit(0);
 }// main
