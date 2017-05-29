@@ -117,8 +117,8 @@ int main(int argc, char *argv[]) {
   hints.ai_socktype = SOCK_DGRAM;   // datagram socket
   hints.ai_flags = AI_PASSIVE;      // suitable for accepting connections
   
-  sfdElectricBooglaoo = socket(AF_INET, SOCK_DGRAM, 0); 
-  if (sfdElectricBooglaoo == -1) {
+  sfdElectricBoogaloo = socket(AF_INET, SOCK_DGRAM, 0); 
+  if (sfdElectricBoogaloo == -1) {
     perror("Server couldn't open a socket");
     exit (1);
   }
