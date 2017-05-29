@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 
   // check cmdline args
   if (argc < 2) {
-    printf("Usage: %s <port>\n", argv[0]);
+    printf("Usage: %s <port> (use the ports luke) actually tho put in one of the three they gave you\n", argv[0]);
     exit(1);
   }
   
@@ -84,7 +84,6 @@ int main(int argc, char *argv[]) {
   ///////copied from client
   
   //sending and getting a message
-
   result = sendto(sfd, "please send me back stuff\n", 35, 0, texthostaddr->ai_addr, texthostaddr->ai_addrlen);
   if (result == -1) {
     perror("Client sendto failed");
