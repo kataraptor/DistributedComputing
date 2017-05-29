@@ -94,8 +94,8 @@ int main(int argc, char *argv[]) {
     exit (1);
   }
   
-  printf("We are here 2");
-  exit(1);
+  // printf("We are here 2");
+  // exit(1);
   
   printf("hello? is there anybody out there");
   
