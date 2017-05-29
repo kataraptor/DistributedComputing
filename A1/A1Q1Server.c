@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
   printf("%s.\n", buffer);
   
   //got your shit, also here's the line you asked for. 
-  result = sendto(sfdElectricBooglaoo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
+  result = sendto(sfdElectricBoogaloo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
   if (result == -1) {
     perror("Server sendto failed");
     exit (EXIT_FAILURE);
@@ -159,6 +159,6 @@ int main(int argc, char *argv[]) {
 
   // close the socket and exit
   close(sfd);
-  close(sfdElectricBooglaoo);
+  close(sfdElectricBoogaloo);
   exit(0);
 }// main
