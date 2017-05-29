@@ -77,14 +77,15 @@ int main(int argc, char *argv[]) {
            };
   */
   //TRYING TO TOUCH THE DIRECTORY SERVER
-  printf("We are here");
-  exit(1);
+  
   struct addrinfo *texthostaddr;
   result = getaddrinfo(DIRECTORYSERVER, PORT, NULL, &texthostaddr);
   if(result != 0){
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
+  printf("We are here");
+  exit(1);
   ///////copied from client
   
   //sending and getting a message
