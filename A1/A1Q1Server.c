@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   
-  printf("butts");
+  print("butts");
   
   /* create a socket
    *
