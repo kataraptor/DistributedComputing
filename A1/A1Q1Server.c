@@ -84,8 +84,7 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
-  printf("We are here");
-  exit(1);
+  
   ///////copied from client
   
   //sending and getting a message
@@ -94,6 +93,9 @@ int main(int argc, char *argv[]) {
     perror("Client sendto failed");
     exit (1);
   }
+  
+  printf("We are here");
+  exit(1);
   
   printf("hello? is there anybody out there");
   
