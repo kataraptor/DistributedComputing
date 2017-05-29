@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
   uint fromlen = sizeof(struct sockaddr);  // length of incoming address
   char buffer[256];                        // buffer for I/O
 
+  printf("We are here");
   // check cmdline args
   if (argc < 2) {
     printf("Usage: %s <port> (use the ports luke) actually tho put in one of the three they gave you\n", argv[0]);
