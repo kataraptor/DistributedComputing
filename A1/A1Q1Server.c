@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   }
   
   printf("butts %s", "test");
-  
+  exit(1);
   /* create a socket
    *
    * Arguments:
