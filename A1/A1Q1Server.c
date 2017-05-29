@@ -94,8 +94,7 @@ int main(int argc, char *argv[]) {
     exit (1);
   }
   
-  printf("We are here");
-  exit(1);
+  
   
   printf("hello? is there anybody out there");
   
@@ -106,7 +105,8 @@ int main(int argc, char *argv[]) {
   }
   printf("Client: msg received was: %s\n", buffer);
   ////////
-  
+  printf("We are here 2");
+  exit(1);
   
   
   //LETTING STUFF TALK TO YOU
