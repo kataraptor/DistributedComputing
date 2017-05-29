@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
   printf("Datagram server starting on port %s.\n", argv[1]);
   
   // wait for a message
-  result = recvfrom(sfdElectricBooglaoo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  result = recvfrom(sfdElectricBoogaloo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
   if (result == -1) {
     perror("Server recvfrom failed");
     exit (EXIT_FAILURE);
