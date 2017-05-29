@@ -9,8 +9,8 @@
  * to compile: gcc datagram_server2.c -o dgram_server
  */
 #define BUFFSIZE 256
-#define PORT 3010
-#define DIRECTORYSERVER goose.cs.umanitoba.ca
+#define PORT "3010"
+#define DIRECTORYSERVER "goose.cs.umanitoba.ca"
 
 
 #include <sys/types.h>
@@ -22,6 +22,11 @@
 #include <stdio.h>
 #include <unistd.h>
 typedef unsigned int uint;
+
+typedef struct file_info{
+ char name[80];
+ int num_lines;
+} FILE_INFO;
 
 int main(int argc, char *argv[]) {
   int sfd;                                 // socket file descriptor
@@ -70,14 +75,31 @@ int main(int argc, char *argv[]) {
            };
   */
   //TRYING TO TOUCH THE DIRECTORY SERVER
-  //wtf does the port go???
-  struct addrinfo *hostaddr;
-  result = getaddrinfo(DIRECTORYSERVER, PORT, NULL, &hostaddr);
+  struct addrinfo *texthostaddr;
+  result = getaddrinfo(DIRECTORYSERVER, PORT, NULL, &texthostaddr);
   if(result != 0){
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
+  ///////copied from client
   
+  //sending and getting a message
+
+  result = sendto(sfd, "please send me back stuff\n", 35, 0, texthostaddr->ai_addr, texthostaddr->ai_addrlen);
+  if (result == -1) {
+    perror("Client sendto failed");
+    exit (1);
+  }
+  
+  printf("hello? is there anybody out there");
+  
+  result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  if (result == -1) {
+    perror("Client recvfrom failed");
+    exit (1);
+  }
+  printf("Client: msg received was: %s\n", buffer);
+  ////////
   
   
   
