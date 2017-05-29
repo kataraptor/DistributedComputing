@@ -94,19 +94,19 @@ int main(int argc, char *argv[]) {
     exit (1);
   }
   
-  
+  printf("We are here 2");
+  exit(1);
   
   printf("hello? is there anybody out there");
   
-  result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
-  if (result == -1) {
-    perror("Client recvfrom failed");
-    exit (1);
-  }
+  // result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  // if (result == -1) {
+  //   perror("Client recvfrom failed");
+  //   exit (1);
+  // }
   printf("Client: msg received was: %s\n", buffer);
   ////////
-  printf("We are here 2");
-  exit(1);
+  
   
   
   //LETTING STUFF TALK TO YOU
@@ -137,9 +137,12 @@ int main(int argc, char *argv[]) {
     perror("Server recvfrom failed");
     exit (EXIT_FAILURE);
   }
+  //print client ip
   printf("Server: received the datagram: ");
   buffer[result]= '\0'; // null terminate the string
   printf("%s.\n", buffer);
+  
+  //got your shit, also here's the line you asked for. 
   result = sendto(sfd, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
   if (result == -1) {
     perror("Server sendto failed");
