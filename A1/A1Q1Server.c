@@ -2,10 +2,10 @@
  * datagram_server2.c
  * COMP 3010 Distributed Computing
  * (C) Computer Science, University of Manitoba
- * 
+ *
  * Create a server that receives connectionless messages (with basic error checking)
  * This version replaces gethostbyname with getaddrinfo
- * 
+ *
  * to compile: gcc datagram_server2.c -o dgram_server
  */
 #define BUFFSIZE 256
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     printf("Usage: %s <port> (use the ports luke) actually tho put in one of the three they gave you\n", argv[0]);
     exit(1);
   }
-  
+
   printf("butts %s", "test");
 
   /* create a socket
@@ -50,9 +50,9 @@ int main(int argc, char *argv[]) {
    * Arguments:
    *   Domain (AF_INET): IPv4 Internet protocols
    *   Type (SOCK_DGRAM): connectionless
-   *   Protocol: (use 0 for IP)  
+   *   Protocol: (use 0 for IP)
    */
-  sfd = socket(AF_INET, SOCK_DGRAM, 0); 
+  sfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sfd == -1) {
     perror("Server couldn't open a socket");
     exit (1);
@@ -78,59 +78,59 @@ int main(int argc, char *argv[]) {
            };
   */
   //TRYING TO TOUCH THE DIRECTORY SERVER
-  
+
   struct addrinfo *texthostaddr;
   result = getaddrinfo(DIRECTORYSERVER, PORT, NULL, &texthostaddr);
   if(result != 0){
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
-  
+
   ///////copied from client
-  
+
   //sending and getting a message
   result = sendto(sfd, "please send me back stuff\n", 35, 0, texthostaddr->ai_addr, texthostaddr->ai_addrlen);
   if (result == -1) {
     perror("Client sendto failed");
     exit (1);
   }
-  
+
   // printf("We are here 2");
   // exit(1);
-  
+
   printf("hello? is there anybody out there");
-  
-  // result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
-  // if (result == -1) {
-  //   perror("Client recvfrom failed");
-  //   exit (1);
-  // }
+
+  result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  if (result == -1) {
+    perror("Client recvfrom failed");
+    exit (1);
+  }
   printf("Client: msg received was: %s\n", buffer);
   ////////
-  
-  
-  
+
+
+
   //LETTING STUFF TALK TO YOU
   // set up a 'hints' struct to specify what kind of address we want
   bzero((void *)&hints, sizeof(hints));
   hints.ai_family = AF_INET;        // IPV4 address
   hints.ai_socktype = SOCK_DGRAM;   // datagram socket
   hints.ai_flags = AI_PASSIVE;      // suitable for accepting connections
-  
-  sfdElectricBoogaloo = socket(AF_INET, SOCK_DGRAM, 0); 
+
+  sfdElectricBoogaloo = socket(AF_INET, SOCK_DGRAM, 0);
   if (sfdElectricBoogaloo == -1) {
     perror("Server couldn't open a socket");
     exit (1);
   }
- 
- 
-  struct addrinfo *hostaddr;  
+
+
+  struct addrinfo *hostaddr;
   result = getaddrinfo(NULL, argv[1], &hints, &hostaddr);
   if(result != 0){
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
-  
+
   // use bind to assign a name to the socket
   result = bind(sfdElectricBoogaloo, hostaddr->ai_addr, hostaddr->ai_addrlen);
   if (result == -1) {
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
     exit (EXIT_FAILURE);
   }
   printf("Datagram server starting on port %s.\n", argv[1]);
-  
+
   // wait for a message
   result = recvfrom(sfdElectricBoogaloo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
   if (result == -1) {
@@ -149,8 +149,8 @@ int main(int argc, char *argv[]) {
   printf("Server: received the datagram: ");
   buffer[result]= '\0'; // null terminate the string
   printf("%s.\n", buffer);
-  
-  //got your shit, also here's the line you asked for. 
+
+  //got your shit, also here's the line you asked for.
   result = sendto(sfdElectricBoogaloo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
   if (result == -1) {
     perror("Server sendto failed");
