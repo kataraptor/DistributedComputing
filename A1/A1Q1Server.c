@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 typedef unsigned int uint;
 
 typedef struct file_info{
@@ -145,6 +146,17 @@ int main(int argc, char *argv[]) {
 
   //print client ip
   //printf("CLIENT IP BIIIIIITCH %s", from);
+
+  //struct sockaddr_in sa;
+  char str[INET_ADDRSTRLEN];
+
+  inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
+
+  //char *ip = inet_ntoa((struct sockaddr *)&from)
+
+  printf("\n%s\n", str); //shuold actually print the bitch
+
+
 
   printf("Server: received the datagram: ");
   buffer[result]= '\0'; // null terminate the string
