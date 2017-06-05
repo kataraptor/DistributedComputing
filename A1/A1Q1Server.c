@@ -100,9 +100,9 @@ int main(int argc, char *argv[]) {
     perror("Client recvfrom failed");
     exit (1);
   }
-
-  printf("%s", gooseFile.name);
-  printf("%d", gooseFile.num_lines);
+//PROBLEM HEREEEEEEE
+  printf("\n%s", gooseFile.name);
+  printf("\n%d", gooseFile.num_lines);
 
 
   printf("Client: msg received was: %s\n", buffer);
