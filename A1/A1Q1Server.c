@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
   struct addrinfo *hostaddr;
   result = getaddrinfo(NULL, argv[1], &hints, &hostaddr);
   if(result != 0){
-    fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
+    fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfdElectricBoogaloo));
     exit(EXIT_FAILURE);
   }
 
