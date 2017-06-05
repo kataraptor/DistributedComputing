@@ -100,12 +100,12 @@ int main(int argc, char *argv[]) {
     perror("Client recvfrom failed");
     exit (1);
   }
-//PROBLEM HEREEEEEEE
+  //making sure it all works
   printf("\n%s", gooseFile.name);
-  printf("\n%d", gooseFile.num_lines);
+  printf("\n%d\n", gooseFile.num_lines);
 
 
-  printf("Client: msg received was: %s\n", buffer);
+  //printf("Client: msg received was: %s\n", buffer); this bitch don't work no more
 
   //LETTING STUFF TALK TO YOU
   // set up a 'hints' struct to specify what kind of address we want
