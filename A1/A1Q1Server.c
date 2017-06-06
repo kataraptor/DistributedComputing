@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
 
     printf("%d\n", lineRequested);
     //print a line indicating the line index that was requested
-    if(lineRequested > gooseFile.num_lines || (!isdigit(lineRequested)))
+    if(lineRequested > gooseFile.num_lines)
     {
       result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
       if (result == -1) {
