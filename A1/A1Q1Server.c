@@ -105,6 +105,10 @@ int main(int argc, char *argv[]) {
   //find the file
   FILE * fp;
   char line[BUFFSIZE];
+  char **lines = NULL;
+  int i =0;
+
+
   fp = fopen(gooseFile.name, "r");
   if(fp == NULL)
   {
@@ -113,16 +117,27 @@ int main(int argc, char *argv[]) {
   }
 
   //ok, copy into a string array
-  char fileCopy[gooseFile.num_lines][BUFFSIZE];
-  int i = 0;
+  //char fileCopy[gooseFile.num_lines][BUFFSIZE];
+  // int i = 0;
+  //
+  // while(fgets(line, sizeof(line), fp))
+  // {
+  //   printf("%s, %d\n", line, i);
+  //   fileCopy[i] = strdup(line);
+  //   i++;
+  //   printf("%s\n", fileCopy[i]);
+  // }
 
   while(fgets(line, sizeof(line), fp))
   {
-    printf("%s, %d\n", line, i);
-    fileCopy[i] = strdup(line);
-    i++;
-    printf("%s\n", fileCopy[i]);
+    i ++;
+    lines = (char**)realloc(lines, sizeof(char*)*i);
+    lines[i-1] = strdup(line);
+    printf("%s", lines[i-1]);
   }
+
+  fclose(fp);
+
 
 
   //printf("Client: msg received was: %s\n", buffer); this bitch don't work no more
