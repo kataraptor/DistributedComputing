@@ -182,10 +182,6 @@ int main(int argc, char *argv[]) {
     if(lineRequested > gooseFile.num_lines)
     {
       result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
-      if (result == -1) {
-        perror("Server sendto failed");
-        exit (EXIT_FAILURE);
-      }
     }
     else if(lineRequested == -1)
     {

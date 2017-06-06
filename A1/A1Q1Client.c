@@ -81,11 +81,21 @@ int main(int argc, char *argv[]) {
   //   perror("Client sendto failed");
   //   exit (1);
   // }
-  int keepSending;
-//RNG TO GET THE NUMBER WE KEEP SENDING TO
+
+  //RNG TO GET THE NUMBER WE KEEP SENDING TO
   srand((unsigned) 7712173);
 
-  printf("%d\n", rand());
+  int keepSending = (((rand()%21)+10) % 21);
+  printf("\nkeep sending: %d\n", keepSending);
+
+  int lineNum = rand() % 4001;
+  printf("\nlinenum: %d\n", lineNum);
+
+
+  int sleepTime = (((rand()%6)+2) % 6);
+  printf("\nsleepTime: %d\n", sleepTime);
+
+
 
 
 
