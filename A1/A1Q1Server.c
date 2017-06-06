@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
   while(fgets(line, sizeof(line), fp))
   {
     printf("%s, %d\n", line, i);
-    strcpy(fileCopy[i], line);
+    fileCopy[i] = strdup(line);
     i++;
     printf("%s\n", fileCopy[i]);
   }
