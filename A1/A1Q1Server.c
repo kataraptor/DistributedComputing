@@ -116,18 +116,6 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  //ok, copy into a string array
-  //char fileCopy[gooseFile.num_lines][BUFFSIZE];
-  // int i = 0;
-  //
-  // while(fgets(line, sizeof(line), fp))
-  // {
-  //   printf("%s, %d\n", line, i);
-  //   fileCopy[i] = strdup(line);
-  //   i++;
-  //   printf("%s\n", fileCopy[i]);
-  // }
-
   while(fgets(line, sizeof(line), fp))
   {
     i ++;
@@ -135,12 +123,8 @@ int main(int argc, char *argv[]) {
     lines[i-1] = strdup(line);
     printf("%s", lines[i-1]);
   }
-
+  //so the whole text file should be in the array line
   fclose(fp);
-
-
-
-  //printf("Client: msg received was: %s\n", buffer); this bitch don't work no more
 
   //LETTING STUFF TALK TO YOU
   // set up a 'hints' struct to specify what kind of address we want
@@ -183,21 +167,35 @@ int main(int argc, char *argv[]) {
   inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
   printf("\n Printing client IP: %s\n", str);
 
-
-
   printf("Server: received the datagram: ");
   buffer[result]= '\0'; // null terminate the string
   printf("%s.\n", buffer);
 
-  //got your shit, also here's the line you asked for.
-  result = sendto(sfdElectricBoogaloo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
-  if (result == -1) {
-    perror("Server sendto failed");
-    exit (EXIT_FAILURE);
+  //convert to int
+
+  int lineRequested = atoi(buffer);
+
+  printf("%d", lineRequested);
+  //print a line indicating the line index that was requested
+  if(lineRequested > gooseFile.num_lines)
+  {
+    result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", 14, 0, (struct sockaddr *)&from, fromlen);
+    if (result == -1) {
+      perror("Server sendto failed");
+      exit (EXIT_FAILURE);
+    }
   }
+
+  // //got your shit, also here's the line you asked for.
+  // result = sendto(sfdElectricBoogaloo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
+  // if (result == -1) {
+  //   perror("Server sendto failed");
+  //   exit (EXIT_FAILURE);
+  // }
 
   // close the socket and exit
   close(sfd);
   close(sfdElectricBoogaloo);
+  printf("\n\nALL DONE\n\n");
   exit(0);
 }// main
