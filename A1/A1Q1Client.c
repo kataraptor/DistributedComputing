@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
        errors ++;
      }
 
-     printf("we got here")
+     printf("we got here");
 
     //sleep(sleepTime);
     //printf("hung Here")
