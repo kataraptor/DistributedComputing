@@ -185,9 +185,11 @@ int main(int argc, char *argv[]) {
     }
     else if(lineRequested == -1)
     {
+      result = sendto(sfdElectricBoogaloo, "ALL DONE\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
       keepWaiting = 0;
     }
     else{
+      result = sendto(sfdElectricBoogaloo, "ALL GOOD\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
       printf("\n%s\n", lines[lineRequested]);
     }
   }

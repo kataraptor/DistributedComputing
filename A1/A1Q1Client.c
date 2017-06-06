@@ -109,7 +109,9 @@ int main(int argc, char *argv[]) {
         exit (1);
       }
 
-     if(recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen))
+
+    result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+     if(strcmp(buffer, "ERROR: LINE NOT FOUND"))
      {
        errors ++;
      }
