@@ -114,7 +114,10 @@ int main(int argc, char *argv[]) {
        errors ++;
      }
 
-    sleep(sleepTime);
+     printf("we got here")
+
+    //sleep(sleepTime);
+    //printf("hung Here")
   }
 
   //send last message to server:
