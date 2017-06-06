@@ -155,45 +155,46 @@ int main(int argc, char *argv[]) {
   }
   printf("Datagram server starting on port %s.\n", argv[1]);
 
-  // wait for a message
-  result = recvfrom(sfdElectricBoogaloo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
-  if (result == -1) {
-    perror("Server recvfrom failed");
-    exit (EXIT_FAILURE);
-  }
-
-  //print client ip
-  char str[INET_ADDRSTRLEN];
-  inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
-  printf("\n Printing client IP: %s\n", str);
-
-  printf("Server: received the datagram: ");
-  buffer[result]= '\0'; // null terminate the string
-  printf("%s\n", buffer);
-
-  //convert to int
-  int lineRequested = atoi(buffer);
-
-  printf("%d\n", lineRequested);
-  //print a line indicating the line index that was requested
-  if(lineRequested > gooseFile.num_lines)
+  int keepWaiting = 1;
+  while(keepWaiting == 1)
   {
-    result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
+    // wait for a message
+    result = recvfrom(sfdElectricBoogaloo, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
     if (result == -1) {
-      perror("Server sendto failed");
+      perror("Server recvfrom failed");
       exit (EXIT_FAILURE);
     }
-  }
-  else{
-    printf("This should be printing lines:\n%s\n", lines[lineRequested]);
-  }
 
-  // //got your shit, also here's the line you asked for.
-  // result = sendto(sfdElectricBoogaloo, "Got your msg\n", 14, 0, (struct sockaddr *)&from, fromlen);
-  // if (result == -1) {
-  //   perror("Server sendto failed");
-  //   exit (EXIT_FAILURE);
-  // }
+    //print client ip
+    char str[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
+    printf("\n Printing client IP: %s\n", str);
+
+    printf("Server: received the datagram: ");
+    buffer[result]= '\0'; // null terminate the string
+    printf("%s\n", buffer);
+
+    //convert to int
+    int lineRequested = atoi(buffer);
+
+    printf("%d\n", lineRequested);
+    //print a line indicating the line index that was requested
+    if(lineRequested > gooseFile.num_lines)
+    {
+      result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
+      if (result == -1) {
+        perror("Server sendto failed");
+        exit (EXIT_FAILURE);
+      }
+    }
+    else if(lineRequested == -1)
+    {
+      keepWaiting = 0;
+    }
+    else{
+      printf("\n%s\n", lines[lineRequested]);
+    }
+  }
 
   // close the socket and exit
   close(sfd);
