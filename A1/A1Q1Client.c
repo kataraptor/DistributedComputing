@@ -103,8 +103,6 @@ int main(int argc, char *argv[]) {
 
     //convert to string
     sprintf(buffer, "%d", lineNum);
-    printf("%s", buffer);
-
       result = sendto(sfd, buffer, strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
       if (result == -1) {
         perror("Client sendto failed");
@@ -113,7 +111,7 @@ int main(int argc, char *argv[]) {
 
 
     result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
-     if(strcmp(buffer, "ERROR: LINE NOT FOUND"))
+     if(strcmp(buffer, "ERROR: LINE NOT FOUND") == 0)
      {
        errors ++;
      }
@@ -131,7 +129,7 @@ int main(int argc, char *argv[]) {
     exit (1);
   }
 
-  printf("\n\nALL DONE:\nNumber of valid req: %d\nNumber of invalid req: %d", (keepSending - errors), errors);
+  printf("\n\nALL DONE:\nNumber of valid req: %d\nNumber of invalid req: %d\n", (keepSending - errors), errors);
 
   // close the socket and exit
   close(sfd);
