@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 
   //find the file
   FILE * fp;
-  char line[BUFFER];
+  char line[BUFFSIZE];
   fp = fopen(gooseFile.name, "r");
   if(fp == NULL)
   {
@@ -113,10 +113,10 @@ int main(int argc, char *argv[]) {
   }
 
   //ok, copy into a string array
-  char fileCopy[gooseFile.num_lines][BUFFER];
+  char fileCopy[gooseFile.num_lines][BUFFSIZE];
   int i = 0;
 
-  while(fgets(line, sizeofline(), fp))
+  while(fgets(line, sizeof(line), fp))
   {
     strcpy(fileCopy[i], line);
     i++;
