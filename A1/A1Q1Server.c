@@ -174,7 +174,7 @@ int main(int argc, char *argv[]) {
   //convert to int
   int lineRequested = atoi(buffer);
 
-  printf("%d", lineRequested);
+  printf("%d\n", lineRequested);
   //print a line indicating the line index that was requested
   if(lineRequested > gooseFile.num_lines)
   {
@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
     }
   }
   else{
-    printf("THIs should be printing lines.%s\n", lines[lineRequested]);
+    printf("This should be printing lines:\n%s\n", lines[lineRequested]);
   }
 
   // //got your shit, also here's the line you asked for.
