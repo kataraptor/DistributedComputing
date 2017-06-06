@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   for(i = 0; i < keepSending; i++)
   {
 
-    printf("KeepSending: %s, int i: %d\n", keepSending, i);
+    printf("KeepSending: %d, int i: %d\n", keepSending, i);
     lineNum = rand() % 4001;
     printf("\nlinenum: %d\n", lineNum);
     sleepTime = (((rand()%6)+2) % 6);
