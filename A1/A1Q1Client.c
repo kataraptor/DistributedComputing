@@ -88,38 +88,43 @@ int main(int argc, char *argv[]) {
   int keepSending = (((rand()%21)+10) % 21);
   printf("\nkeep sending: %d\n", keepSending);
 
-  int lineNum = rand() % 4001;
-  printf("\nlinenum: %d\n", lineNum);
-
-
-  int sleepTime = (((rand()%6)+2) % 6);
-  printf("\nsleepTime: %d\n", sleepTime);
-
-
-
-
-
-
+  int errors = 0;
   int i;
+  int lineNum;
+  int sleepTime;
   for(i = 0; i < keepSending; i++)
   {
-      //buffer = 16
+    lineNum = rand() % 4001;
+    printf("\nlinenum: %d\n", lineNum);
+    sleepTime = (((rand()%6)+2) % 6);
+    printf("\nsleepTime: %d\n", sleepTime);
+
+    //convert to string
+    sprintf(buffer, "%d", lineNum);
+    printf("%s", buffer);
+
       result = sendto(sfd, buffer, strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
       if (result == -1) {
         perror("Client sendto failed");
         exit (1);
       }
+
+     if(recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen))
+     {
+       errors ++;
+     }
+
+    sleep(sleepTime);
   }
 
-
-
-
-  result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
+  //send last message to server:
+  result = sendto(sfd, "-1", strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
   if (result == -1) {
-    perror("Client recvfrom failed");
+    perror("Client sendto failed");
     exit (1);
   }
-  printf("Client: msg received was: %s\n", buffer);
+
+  printf("\n\nALL DONE:\nNumber of valid req: %d\nNumber of invalid req: %d", (keepSending - errors), errors);
 
   // close the socket and exit
   close(sfd);
