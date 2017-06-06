@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
     }
   }
   else{
-    printf("%s\n", lines[lineRequested]);
+    printf("THIs should be printing lines.%s\n", lines[lineRequested]);
   }
 
   // //got your shit, also here's the line you asked for.
