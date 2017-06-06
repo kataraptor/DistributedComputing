@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
     i ++;
     lines = (char**)realloc(lines, sizeof(char*)*i);
     lines[i-1] = strdup(line);
-    printf("%s", lines[i-1]);
+    //printf("%s", lines[i-1]);
   }
   //so the whole text file should be in the array line
   fclose(fp);
