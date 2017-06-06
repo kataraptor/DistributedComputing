@@ -169,21 +169,23 @@ int main(int argc, char *argv[]) {
 
   printf("Server: received the datagram: ");
   buffer[result]= '\0'; // null terminate the string
-  printf("%s.\n", buffer);
+  printf("%s\n", buffer);
 
   //convert to int
-
   int lineRequested = atoi(buffer);
 
   printf("%d", lineRequested);
   //print a line indicating the line index that was requested
   if(lineRequested > gooseFile.num_lines)
   {
-    result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", 14, 0, (struct sockaddr *)&from, fromlen);
+    result = sendto(sfdElectricBoogaloo, "ERROR: LINE NOT FOUND\n", BUFFSIZE, 0, (struct sockaddr *)&from, fromlen);
     if (result == -1) {
       perror("Server sendto failed");
       exit (EXIT_FAILURE);
     }
+  }
+  else{
+    printf("%s\n", lines[lineRequested]);
   }
 
   // //got your shit, also here's the line you asked for.
