@@ -94,6 +94,8 @@ int main(int argc, char *argv[]) {
   int sleepTime;
   for(i = 0; i < keepSending; i++)
   {
+
+    printf("KeepSending: %s, int i: %d\n", keepSending, i);
     lineNum = rand() % 4001;
     printf("\nlinenum: %d\n", lineNum);
     sleepTime = (((rand()%6)+2) % 6);
@@ -116,7 +118,7 @@ int main(int argc, char *argv[]) {
        errors ++;
      }
 
-     printf("we got here");
+     printf("Errors: %d\n", errors);
 
     //sleep(sleepTime);
     //printf("hung Here")
