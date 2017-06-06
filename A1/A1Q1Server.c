@@ -153,6 +153,11 @@ int main(int argc, char *argv[]) {
     perror("Couldn't bind to server socket");
     exit (EXIT_FAILURE);
   }
+
+  //print client ip
+  char clientIP[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &(from.sin_addr), clientIP, INET_ADDRSTRLEN);
+  printf("\nPrinting client IP: %s\n", clientIP);
   printf("Datagram server starting on port %s.\n", argv[1]);
 
   int keepWaiting = 1;
@@ -164,11 +169,6 @@ int main(int argc, char *argv[]) {
       perror("Server recvfrom failed");
       exit (EXIT_FAILURE);
     }
-
-    //print client ip
-    char str[INET_ADDRSTRLEN];
-    inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
-    printf("\n Printing client IP: %s\n", str);
 
     printf("Server: received the datagram: ");
     buffer[result]= '\0'; // null terminate the string
@@ -199,6 +199,6 @@ int main(int argc, char *argv[]) {
   // close the socket and exit
   close(sfd);
   close(sfdElectricBoogaloo);
-  printf("\n\nALL DONE\n\n");
+  printf("\n\nclosing connection to clientIP: %s\n\n", clientIP);
   exit(0);
 }// main
