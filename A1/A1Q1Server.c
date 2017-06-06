@@ -12,7 +12,6 @@
 #define PORT "3010"
 #define DIRECTORYSERVER "goose.cs.umanitoba.ca"
 
-
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -85,8 +84,6 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  ///////copied from client
-
   //sending and getting a message
   result = sendto(sfd, "please send me back stuff\n", 35, 0, texthostaddr->ai_addr, texthostaddr->ai_addrlen);
   if (result == -1) {
@@ -104,6 +101,27 @@ int main(int argc, char *argv[]) {
   //making sure it all works
   printf("\n%s", gooseFile.name);
   printf("\n%d\n", gooseFile.num_lines);
+
+  //find the file
+  FILE * fp;
+  char line[BUFFER];
+  fp = fopen(gooseFile.name, "r");
+  if(fp == NULL)
+  {
+    perror("couldn't open file");
+    exit(1);
+  }
+
+  //ok, copy into a string array
+  char fileCopy[gooseFile.num_lines][BUFFER];
+  int i = 0;
+
+  while(fgets(line, sizeofline(), fp))
+  {
+    strcpy(fileCopy[i], line);
+    i++;
+    printf("%s\n", fileCopy[i]);
+  }
 
 
   //printf("Client: msg received was: %s\n", buffer); this bitch don't work no more
@@ -145,16 +163,9 @@ int main(int argc, char *argv[]) {
   }
 
   //print client ip
-  //printf("CLIENT IP BIIIIIITCH %s", from);
-
-  //struct sockaddr_in sa;
   char str[INET_ADDRSTRLEN];
-
   inet_ntop(AF_INET, &(from.sin_addr), str, INET_ADDRSTRLEN);
-
-  //char *ip = inet_ntoa((struct sockaddr *)&from)
-
-  printf("\n%s\n", str); //shuold actually print the bitch
+  printf("\n Printing client IP: %s\n", str);
 
 
 
