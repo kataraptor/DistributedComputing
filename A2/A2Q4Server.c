@@ -162,7 +162,6 @@ int main(int argc, char *argv[]) {
     printf("Usage: %s <port>\n", argv[0]);
     exit(EXIT_FAILURE);
   }
-  printf("before file info");
   info = getFileInfo();
   readFile(info);
 
@@ -186,10 +185,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  printf("binding\n");
   // use bind to assign a name to the socket
   result = bind(sfd, hostaddr->ai_addr, hostaddr->ai_addrlen);
-  printf("bind to %s\n", result);
   if (result == -1) {
     perror("Couldn't bind to server socket");
     exit (EXIT_FAILURE);
@@ -202,8 +199,6 @@ int main(int argc, char *argv[]) {
   // loop forever
   int forever = 1;
   while(forever == 1){
-
-    printf("We are in the while\n");
     // listen for connections to this socket
     result = listen(sfd, 5);
     if (result == -1) {
@@ -224,9 +219,9 @@ int main(int argc, char *argv[]) {
     client_ip = caddr.sin_addr;
     printf("Accepting connection from %s\n", inet_ntop(AF_INET, (void *)&client_ip, buffer, BUFSIZE));
 
-    THREAD_ARG *clientStruct;
-    clientStruct->client_ip = client_ip;
-    clientStruct->sfd = newsock;
+    THREAD_ARG clientStruct;
+    clientStruct.client_ip = client_ip;
+    clientStruct.sfd = newsock;
 
     pthread_t my_thread;
     printf("just before create\n");
