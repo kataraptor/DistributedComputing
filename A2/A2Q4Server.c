@@ -162,6 +162,7 @@ int main(int argc, char *argv[]) {
     printf("Usage: %s <port>\n", argv[0]);
     exit(EXIT_FAILURE);
   }
+  printf("before file info");
   info = getFileInfo();
   readFile(info);
 
