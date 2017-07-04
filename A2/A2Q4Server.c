@@ -41,8 +41,9 @@ char **file_lines;           // the lines read from the file
 char buffer[BUFSIZE];        // buffer for I/O
 
 //.............................................................................implementYourself
-void* multiThread(void *clientStruct){
+void multiThread(void* my_clientStruct){
   //hahahahahaha
+  THREAD_ARG *clientStruct = (THREAD_ARG*)my_clientStruct;
 
   int newsock;               // file descriptor for incoming connection
   uint result;               // return result from functions
@@ -50,21 +51,20 @@ void* multiThread(void *clientStruct){
 
   // read requests and send replies until a negative number is received
   bzero(buffer, BUFSIZE);
-  result = read(clientStruct.sfd, buffer, BUFSIZE - 1);
+  result = read(clientStruct->sfd, buffer, BUFSIZE - 1);
   request = atoi(buffer);
   while(request >= 0){
-    printf("%s received the message: %s\n", argv[0], buffer);
+    printf("We received the message: %s\n", buffer);
     if(request < info.num_lines)
-      result = write(clientStruct.sfd, file_lines[request], strlen(file_lines[request]) + 1);
+      result = write(clientStruct->sfd, file_lines[request], strlen(file_lines[request]) + 1);
     else
-      result = write(clientStruct.sfd, NOT_FOUND, strlen(NOT_FOUND) + 1);
+      result = write(clientStruct->sfd, NOT_FOUND, strlen(NOT_FOUND) + 1);
     bzero(buffer, BUFSIZE);
-    result = read(clientStruct.sfd, buffer, BUFSIZE - 1);
+    result = read(clientStruct->sfd, buffer, BUFSIZE - 1);
     request = atoi(buffer);
   }
-  close(clientStruct.sfd);
-  printf("Closing connection to %s\n", inet_ntop(AF_INET, (void *)clientStruct.client_ip, buffer, BUFSIZE));
-  return result;
+  close(clientStruct->sfd);
+  printf("Closing connection to %s\n", inet_ntop(AF_INET, &clientStruct->client_ip, buffer, BUFSIZE));
 }// implementYourself
 
 
@@ -117,30 +117,6 @@ FILE_INFO getFileInfo(){
   return result;
 }// getFileInfo
 
-//................................................................................readFile
-void readFile(FILE_INFO info){
-  int i;
-  FILE *infile;
-  char *line;
-  printf("readFile: file name is %s, lines = %d\n", info.name, info.num_lines);
-
-  file_lines = (char **)malloc(info.num_lines * sizeof(char *));
-  // attempt to read file
-  infile = fopen(info.name, "r");
-  if(infile == NULL){
-    perror("Error opening file");
-    exit (EXIT_FAILURE);
-  }
-
-  // read the lines from the file
-  i = 0;
-  line = fgets(buffer, BUFSIZE, infile);
-  while(line != NULL){
-    file_lines[i++] = strdup(buffer);
-    line = fgets(buffer, BUFSIZE, infile);
-  }
-  fclose(infile);
-}// readFile
 
 void readFile(FILE_INFO info){
   int i;
@@ -237,13 +213,13 @@ int main(int argc, char *argv[]) {
     client_ip = caddr.sin_addr;
     printf("Accepting connection from %s\n", inet_ntop(AF_INET, (void *)&client_ip, buffer, BUFSIZE));
 
-    THREAD_ARG clientStruct;
-    clientStruct.client_ip = client_ip;
-    clientStruct.sfd = newsock;
+    THREAD_ARG *clientStruct;
+    clientStruct->client_ip = client_ip;
+    clientStruct->sfd = newsock;
 
     pthread_t my_thread;
 
-    pthread_create(&my_thread, NULL, multiThread, &clientStruct);
+    pthread_create(&my_thread, NULL, multiThread, (void*) clientStruct);
 
   }// end server
 
