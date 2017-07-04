@@ -226,7 +226,7 @@ int main(int argc, char *argv[]) {
     pthread_t my_thread;
     printf("just before create\n");
 
-    pthread_create(&my_thread, NULL, multiThread, (void*) clientStruct);
+    pthread_create(&my_thread, NULL, multiThread, (void*) &clientStruct);
 
   }// end server
 
