@@ -186,9 +186,10 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
+  printf("binding\n");
   // use bind to assign a name to the socket
   result = bind(sfd, hostaddr->ai_addr, hostaddr->ai_addrlen);
-  printf("bind to %s", result);
+  printf("bind to %s\n", result);
   if (result == -1) {
     perror("Couldn't bind to server socket");
     exit (EXIT_FAILURE);
@@ -197,7 +198,7 @@ int main(int argc, char *argv[]) {
   //printf("find arg %s", argv[1]);
 
   //printf("Stream server starting on port %s.\n", argv[1]);
-  printf("Start");
+  printf("Start\n");
   // loop forever
   int forever = 1;
   while(forever == 1){
