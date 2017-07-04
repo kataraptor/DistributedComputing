@@ -1,137 +1,121 @@
 /*
- * datagram_client2.c
+ * A1Q1Client.c
  * COMP 3010 Distributed Computing
  * (C) Computer Science, University of Manitoba
+ * Assignment 1 sample solution
  *
- * Create a datagram client (with basic error checking)
- * This version replaces gethostbyname with getaddrinfo
- *
- * to compile: gcc datagram_client2.c -o dgram_client
  */
 
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <stdlib.h>           // for random numbers
+#include <pthread.h>
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
-typedef unsigned int uint;   // to keep the compiler happy
+#include <unistd.h>           // for sleep
+#include <time.h>
+typedef unsigned int uint;    // for return types
+
+// Program constants
+#define BUFSIZE 256                         // our buffer size
+#define ENDCLIENT -1                        // client is done
+#define MIN_REQUESTS 10                     // minimum requests
+#define MAX_REQUESTS 20                     // maximum requests
+#define MAX_INDEX 4000                      // maximum index of a request
+#define MIN_DELAY 2                         // minimum delay in seconds
+#define MAX_DELAY 5                         // maximum delay in seconds
+#define NOT_FOUND "ERROR: LINE NOT FOUND"   // returned if index invalid
+
+// a macro for random integers
+#define RAND_INT(min,max) (rand()%((max)-(min)+1)+(min))
+
 
 
 int main(int argc, char *argv[]) {
-  int sfd;                                 // socket file descriptor
-  int result;                              // result of function calls
-  struct sockaddr_in from;                 // received-from socket address
-  uint fromlen = sizeof(struct sockaddr);  // length of incoming address
-  char buffer[256];                        // buffer for fgets
+  int sfd;                // socket file descriptor
+  uint retval;            // return result of function calls
+  char buffer[BUFSIZE];   // buffer for fgets
+  int numRequests;        // how many requests we will do
+  int i;                  // loop index
+  int request;            // the request sent to the server
+  int delay;              // random delay in seconds
+  int totalValid = 0;     // count of valid requests
+  int totalInvalid = 0;   // count of invalid requests
 
   // check cmdline args
-  if (argc != 3) {
+  if (argc < 3) {
     printf("Usage: %s <server> <port>\n", argv[0]);
     exit(0);
   }
 
-  // create a socket
-  //
-  // Arguments:
-  //   Domain (AF_INET): IPv4 Internet protocols
-  //   Type (SOCK_DGRAM): connectionless
-  //   Protocol: (use 0 for IP)
-  sfd = socket(AF_INET, SOCK_DGRAM, 0);
+  // set up the random number generator
+  srand(6408169);   // seed the rng
+  numRequests = RAND_INT(MIN_REQUESTS, MAX_REQUESTS);
+  printf("Number of requests: %d\n", numRequests);
+
+  /* create a socket
+
+     Arguments:
+       Domain (AF_INET): IPv4 Internet protocols
+       Type (SOCK_STREAM): connection-based
+       Protocol: (use 0 for IP)
+   */
+  sfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sfd == -1) {
-    perror("Client couldn't open a socket");
-    exit (1);
+    perror("client couldn't open a socket");
+    exit (EXIT_FAILURE);
   }
 
   /* Use getaddrinfo to get the server's address information given the
      host/port entered on the command line. The result is returned in a
      linked list of addrinfo structs, shown below:
-
-       int getaddrinfo(const char *node, const char *service,
-                       const struct addrinfo *hints,
-                       struct addrinfo **res);
-
-           struct addrinfo {
-               int              ai_flags;
-               int              ai_family;
-               int              ai_socktype;
-               int              ai_protocol;
-               size_t           ai_addrlen;
-               struct sockaddr *ai_addr;
-               char            *ai_canonname;
-               struct addrinfo *ai_next;
-           };
   */
 
   struct addrinfo *hostaddr;
-  result = getaddrinfo(argv[1], argv[2], NULL, &hostaddr);
-  if(result != 0){
+  retval = getaddrinfo(argv[1], argv[2], NULL, &hostaddr);
+  if(retval != 0){
     fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(sfd));
     exit(EXIT_FAILURE);
   }
 
-  // // send a datagram to the server and wait for a response
-  // printf("Please enter your message: ");
-  // bzero(buffer, 256);
-  // fgets(buffer, 255, stdin);
-  // result = sendto(sfd, buffer, strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
-  // if (result == -1) {
-  //   perror("Client sendto failed");
-  //   exit (1);
-  // }
-
-  //RNG TO GET THE NUMBER WE KEEP SENDING TO
-  srand((unsigned) 7712173);
-
-  int keepSending = (((rand()%21)+10) % 21);
-  printf("\nkeep sending: %d\n", keepSending);
-
-  int errors = 0;
-  int i;
-  int lineNum;
-  int sleepTime;
-  for(i = 0; i < keepSending; i++)
-  {
-
-    printf("KeepSending: %d, int i: %d\n", keepSending, i);
-    lineNum = rand() % 4001;
-    printf("\nlinenum: %d\n", lineNum);
-    sleepTime = (((rand()%6)+2) % 6);
-    printf("\nsleepTime: %d\n", sleepTime);
-
-    //convert to string
-    sprintf(buffer, "%d", lineNum);
-      result = sendto(sfd, buffer, strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
-      if (result == -1) {
-        perror("Client sendto failed");
-        exit (1);
-      }
-
-
-    result = recvfrom(sfd, buffer, 256, 0, (struct sockaddr *)&from, &fromlen);
-     if(strcmp(buffer, "ERROR: LINE NOT FOUND") == 0)
-     {
-       errors ++;
-     }
-
-     printf("Errors: %d\n", errors);
-
-    sleep(sleepTime);
-    //printf("hung Here")
+  // attempt to connect to the server socket
+  retval = connect(sfd, hostaddr->ai_addr, hostaddr->ai_addrlen);
+  if (retval != 0) {
+    perror("Couldn't connect to server");
+    exit (EXIT_FAILURE);
   }
+  for(i = 0; i < numRequests; i++){
+    request = rand() % MAX_INDEX;
+    delay = RAND_INT(MIN_DELAY, MAX_DELAY);
+    sleep(delay);
+    // let's write something to the socket
+    bzero(buffer, BUFSIZE);
+    sprintf(buffer, "%d", request);
+    retval = write(sfd, buffer, strlen(buffer)); // write to a socket
+    bzero(buffer,256);
+    retval = read(sfd, buffer, BUFSIZE - 1);
+    if(strcmp(NOT_FOUND, buffer) == 0){
+      totalInvalid += 1;
+    } else {
+      totalValid += 1;
+    }
+    printf("%2d: %5d %s\n", i, request, buffer);
+  }// for
 
-  //send last message to server:
-  result = sendto(sfd, "-1", strlen(buffer), 0, hostaddr->ai_addr, hostaddr->ai_addrlen);
-  if (result == -1) {
-    perror("Client sendto failed");
-    exit (1);
-  }
+  // tell the server we are done
+    bzero(buffer, BUFSIZE);
+    sprintf(buffer, "%d", ENDCLIENT);
+    retval = write(sfd, buffer, strlen(buffer)); // write to a socket
 
-  printf("\n\nALL DONE:\nNumber of valid req: %d\nNumber of invalid req: %d\n", (keepSending - errors), errors);
-
-  // close the socket and exit
+  // close the socket
   close(sfd);
+
+  // print statistics and exit
+  printf("  Valid lines: %2d\n", totalValid);
+  printf("Invalid lines: %2d\n", totalInvalid);
   exit(0);
-} // main
+}// main
