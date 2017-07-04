@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
       exit (EXIT_FAILURE);
     }
 
-    printf("Found a connection");
+    printf("Found a connection\n");
 
     // accept a connection on this socket (creating a new connected socket)
     clen = sizeof(caddr);
