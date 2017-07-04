@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
 
   printf("find arg %s", argv[1]);
 
-  printf("Stream server starting on port %s.\n", argv[1]);
+  //printf("Stream server starting on port %s.\n", argv[1]);
   printf("Start");
   // loop forever
   int forever = 1;
