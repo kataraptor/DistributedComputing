@@ -42,6 +42,7 @@ char buffer[BUFSIZE];        // buffer for I/O
 
 //.............................................................................implementYourself
 void multiThread(void* my_clientStruct){
+  printf("we be here");
   //hahahahahaha
   printf("We be here");
   THREAD_ARG *clientStruct = (THREAD_ARG*)my_clientStruct;
@@ -197,6 +198,7 @@ int main(int argc, char *argv[]) {
   int forever = 1;
   while(forever === 1){
 
+    printf("We are in the while");
     // listen for connections to this socket
     result = listen(sfd, 5);
     if (result == -1) {
@@ -204,7 +206,7 @@ int main(int argc, char *argv[]) {
       exit (EXIT_FAILURE);
     }
 
-    printf("Found conn")
+    printf("Found a connection");
 
     // accept a connection on this socket (creating a new connected socket)
     clen = sizeof(caddr);
@@ -223,6 +225,7 @@ int main(int argc, char *argv[]) {
 
     pthread_t my_thread;
     printf("just before create")
+
     pthread_create(&my_thread, NULL, multiThread, (void*) clientStruct);
 
   }// end server
