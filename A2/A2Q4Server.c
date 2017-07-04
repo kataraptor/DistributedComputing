@@ -196,7 +196,7 @@ int main(int argc, char *argv[]) {
 
   // loop forever
   int forever = 1;
-  while(forever === 1){
+  while(forever == 1){
 
     printf("We are in the while");
     // listen for connections to this socket
