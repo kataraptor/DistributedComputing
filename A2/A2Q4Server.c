@@ -43,6 +43,7 @@ char buffer[BUFSIZE];        // buffer for I/O
 //.............................................................................implementYourself
 void multiThread(void* my_clientStruct){
   //hahahahahaha
+  printf("We be here");
   THREAD_ARG *clientStruct = (THREAD_ARG*)my_clientStruct;
 
   int newsock;               // file descriptor for incoming connection
@@ -193,7 +194,8 @@ int main(int argc, char *argv[]) {
   printf("Stream server starting on port %s.\n", argv[1]);
 
   // loop forever
-  while(1){
+  int forever = 1;
+  while(forever === 1){
 
     // listen for connections to this socket
     result = listen(sfd, 5);
@@ -201,6 +203,8 @@ int main(int argc, char *argv[]) {
       perror("Listen failed");
       exit (EXIT_FAILURE);
     }
+
+    printf("Found conn")
 
     // accept a connection on this socket (creating a new connected socket)
     clen = sizeof(caddr);
@@ -218,7 +222,7 @@ int main(int argc, char *argv[]) {
     clientStruct->sfd = newsock;
 
     pthread_t my_thread;
-
+    printf("just before create")
     pthread_create(&my_thread, NULL, multiThread, (void*) clientStruct);
 
   }// end server
