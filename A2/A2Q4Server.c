@@ -194,7 +194,7 @@ int main(int argc, char *argv[]) {
     exit (EXIT_FAILURE);
   }
 
-  printf("find arg %s", argv[1]);
+  //printf("find arg %s", argv[1]);
 
   //printf("Stream server starting on port %s.\n", argv[1]);
   printf("Start");
