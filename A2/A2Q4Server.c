@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
     clientStruct->sfd = newsock;
 
     pthread_t my_thread;
-    printf("just before create")
+    printf("just before create");
 
     pthread_create(&my_thread, NULL, multiThread, (void*) clientStruct);
 
