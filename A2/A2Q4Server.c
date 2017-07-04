@@ -188,10 +188,13 @@ int main(int argc, char *argv[]) {
 
   // use bind to assign a name to the socket
   result = bind(sfd, hostaddr->ai_addr, hostaddr->ai_addrlen);
+  printf("bind to %s", result);
   if (result == -1) {
     perror("Couldn't bind to server socket");
     exit (EXIT_FAILURE);
   }
+
+  printf("find arg %s", argv[1]);
 
   printf("Stream server starting on port %s.\n", argv[1]);
   printf("Start");
