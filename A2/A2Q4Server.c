@@ -203,7 +203,7 @@ int main(int argc, char *argv[]) {
   int forever = 1;
   while(forever == 1){
 
-    printf("We are in the while");
+    printf("We are in the while\n");
     // listen for connections to this socket
     result = listen(sfd, 5);
     if (result == -1) {
